@@ -69,3 +69,7 @@ python -m http.server 8765
 - Données météo : [Open-Meteo](https://open-meteo.com), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Police : [Cormorant Garamond](https://fonts.google.com/specimen/Cormorant+Garamond) (SIL Open Font License).
 - Illustration de la montre : générée par IA dans le style des films d'animation japonais. Ce projet n'a aucun lien avec le Studio Ghibli.
+
+## Licence
+
+Le code est distribué sous licence [MIT](LICENSE). Les données météo et la police gardent leurs propres licences (voir Crédits).

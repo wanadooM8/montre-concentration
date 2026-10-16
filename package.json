@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Petite montre de gousset de bureau pour se concentrer",
+  "license": "MIT",
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",
