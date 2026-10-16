@@ -58,22 +58,7 @@
       <text id="readout" x="0" y="50" text-anchor="middle" font-size="40" fill="#3b2c14"></text>
       <text id="paused" x="0" y="-62" text-anchor="middle" font-size="22" fill="#8a7a5a" letter-spacing="2">en pause</text>
 
-      <!-- Aiguilles : temps restant (mode concentration) ou heure réelle (mode montre) -->
-      <path id="hourHand" d="M -5 14 L -3.5 -52 Q -14 -68 0 -96 Q 14 -68 3.5 -52 L 5 14 Z"
-            fill="#2c4270" stroke="#141d33" stroke-width="2"/>
-      <path id="minuteHand" d="M -3.5 16 L -2.5 -118 Q -10 -132 0 -152 Q 10 -132 2.5 -118 L 3.5 16 Z"
-            fill="#2c4270" stroke="#141d33" stroke-width="2"/>
-      <circle r="12" fill="#2c4270" stroke="#141d33" stroke-width="2"/>
-
-      <!-- Trotteuse : secondes réelles, en continu -->
-      <g id="secondHand" pointer-events="none">
-        <line x1="0" y1="38" x2="0" y2="-186" stroke="#8c3b2a" stroke-width="2.4" stroke-linecap="round"/>
-        <circle cy="30" r="7" fill="none" stroke="#8c3b2a" stroke-width="2.4"/>
-        <circle r="6" fill="#8c3b2a"/>
-      </g>
-      <circle r="3" fill="#e9c98a" pointer-events="none"/>
-
-      <!-- Zones cliquables (transparentes), au-dessus de tout le reste -->
+      <!-- Zones cliquables (transparentes) -->
       <circle id="dialHit" r="211" fill="transparent"/>
       <g id="hourHit" class="handHit">
         <line x1="0" y1="0" x2="0" y2="-100" stroke="transparent" stroke-width="34" stroke-linecap="round"/>
@@ -82,7 +67,7 @@
         <line x1="0" y1="-60" x2="0" y2="-158" stroke="transparent" stroke-width="30" stroke-linecap="round"/>
       </g>
 
-      <!-- Bouton musique : lancer / arrêter (au-dessus des aiguilles pour rester cliquable) -->
+      <!-- Bouton musique : lancer / arrêter (au-dessus des zones cliquables pour rester cliquable) -->
       <g id="musicBtn" transform="translate(-88 0)" role="button" aria-label="Musique">
         <title>Musique : lancer / arrêter</title>
         <circle r="26" fill="url(#goldRing)" stroke="#5b3f12" stroke-width="2"/>
@@ -93,6 +78,25 @@
           <path d="M -1.8 5 V -7 L 8.4 -9.5 V 3" fill="none" stroke-width="1.5"/>
           <path d="M -1.8 -7 L 8.4 -9.5 V -6.6 L -1.8 -4.1 Z"/>
         </g>
+      </g>
+
+      <!-- Aiguilles : temps restant (mode concentration) ou heure réelle (mode montre).
+           Dessinées par-dessus le bouton musique mais sans capter les clics :
+           on saisit les aiguilles par les zones cliquables ci-dessus. -->
+      <g pointer-events="none">
+        <path id="hourHand" d="M -5 14 L -3.5 -52 Q -14 -68 0 -96 Q 14 -68 3.5 -52 L 5 14 Z"
+              fill="#2c4270" stroke="#141d33" stroke-width="2"/>
+        <path id="minuteHand" d="M -3.5 16 L -2.5 -118 Q -10 -132 0 -152 Q 10 -132 2.5 -118 L 3.5 16 Z"
+              fill="#2c4270" stroke="#141d33" stroke-width="2"/>
+        <circle r="12" fill="#2c4270" stroke="#141d33" stroke-width="2"/>
+
+        <!-- Trotteuse : secondes réelles, en continu -->
+        <g id="secondHand">
+          <line x1="0" y1="38" x2="0" y2="-186" stroke="#8c3b2a" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cy="30" r="7" fill="none" stroke="#8c3b2a" stroke-width="2.4"/>
+          <circle r="6" fill="#8c3b2a"/>
+        </g>
+        <circle r="3" fill="#e9c98a"/>
       </g>
     </g>
 

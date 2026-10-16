@@ -24,10 +24,28 @@ function save(key, value) {
   }
 }
 
+/**
+ * Taille mémorisée. Les tailles ont glissé d'un cran (l'ancienne « grande » est la
+ * nouvelle « moyenne »…) : on convertit une seule fois l'ancien réglage pour garder
+ * la même montre à l'écran.
+ */
+function loadSize() {
+  const size = load('size', null);
+  if (size === null) {
+    save('sizeVersion', 2); // première ouverture : rien à convertir
+    return 'moyenne';
+  }
+  if (load('sizeVersion', 1) >= 2) return size;
+  const migrated = { petite: 'petite', moyenne: 'petite', grande: 'moyenne' }[size] ?? 'moyenne';
+  save('size', migrated);
+  save('sizeVersion', 2);
+  return migrated;
+}
+
 export const settings = {
   duration: load('duration', DEFAULT_DURATION), // minutes de concentration
   pomodoro: load('pomodoro', false),            // enchaîner pauses et sessions
-  size: load('size', 'moyenne'),                // clé de SIZES
+  size: loadSize(),                             // clé de SIZES
   mode: load('mode', 'focus'),                  // 'focus' (concentration) | 'watch' (montre)
   place: load('place', null),                   // { name, lat, lon } pour la météo
   music: load('music', null),                   // chemin du fichier de musique (appli seulement)

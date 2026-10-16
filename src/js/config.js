@@ -22,7 +22,7 @@ export const LONG_BREAK = 15;
 export const LONG_BREAK_EVERY = 4;
 
 /** Largeur de la montre à l'écran, en pixels. */
-export const SIZES = { petite: 200, moyenne: 300, grande: 420 };
+export const SIZES = { petite: 300, moyenne: 420, grande: 600 };
 
 /** Couleurs de l'arc selon la phase. */
 export const ARC_COLORS = { focus: '#9cc98a', break: '#3e5c8a' };

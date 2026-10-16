@@ -12,8 +12,8 @@
       {
         "label": "main",
         "title": "Montre de concentration",
-        "width": 213,
-        "height": 258,
+        "width": 298,
+        "height": 361,
         "resizable": false,
         "maximizable": false,
         "decorations": false,
