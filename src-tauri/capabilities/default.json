@@ -8,6 +8,7 @@
     "core:menu:default",
     "core:window:allow-start-dragging",
     "core:window:allow-set-size",
-    "core:window:allow-close"
+    "core:window:allow-close",
+    "dialog:allow-open"
   ]
 }

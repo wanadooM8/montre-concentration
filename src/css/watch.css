@@ -79,6 +79,26 @@ body {
 .handHit { cursor: grab; }
 .handHit.dragging { cursor: grabbing; }
 
+/* Bouton musique : note bleue à l'arrêt, verte et dansante pendant la lecture */
+#musicBtn { cursor: pointer; }
+#musicBtn .note {
+  transform-box: fill-box;
+  transform-origin: center;
+  fill: #2c4270;
+  stroke: #2c4270;
+  transition: fill 0.3s, stroke 0.3s;
+}
+#musicBtn:hover > circle:first-of-type { filter: brightness(1.12); }
+#musicBtn.playing .note {
+  fill: #4f8a3c;
+  stroke: #4f8a3c;
+  animation: noteBob 0.9s ease-in-out infinite alternate;
+}
+@keyframes noteBob {
+  from { transform: scale(1.35) translateY(1.2px) rotate(-4deg); }
+  to { transform: scale(1.35) translateY(-1.2px) rotate(4deg); }
+}
+
 /* En mode montre, rien ne se règle : curseur normal partout */
 .watch-mode .handHit,
 .watch-mode #dialHit,

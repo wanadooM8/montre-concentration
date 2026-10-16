@@ -3,7 +3,8 @@
 //! Toute l'interface (cadran, minuteur, météo, menu du clic droit) est dans `../src`.
 //! Ce fichier ajoute ce qui relève du système :
 //! - l'icône dans la zone de notification, près de l'horloge Windows ;
-//! - la mémorisation de la position de la montre sur le bureau.
+//! - la mémorisation de la position de la montre sur le bureau ;
+//! - la fenêtre de choix d'un fichier de musique.
 
 use tauri::{
     menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem},
@@ -77,6 +78,7 @@ pub fn run() {
                 .with_state_flags(StateFlags::POSITION)
                 .build(),
         )
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             setup_tray(app)?;
             Ok(())

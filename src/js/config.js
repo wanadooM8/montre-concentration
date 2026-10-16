@@ -32,3 +32,6 @@ export const HAND_SMOOTHING = 0.18;
 
 /** Fréquence de mise à jour de la météo. */
 export const WEATHER_REFRESH_MS = 15 * 60 * 1000;
+
+/** Fichiers proposés pour la musique de fond (audio, ou vidéo dont on garde le son). */
+export const MUSIC_EXTENSIONS = ['mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav', 'flac', 'mp4', 'webm'];

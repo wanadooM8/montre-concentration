@@ -12,6 +12,7 @@ Elle sert de minuteur de concentration, et peut aussi devenir une simple montre 
 - **Mode montre** : les aiguilles donnent l'heure réelle.
 - **Trotteuse** qui tourne en continu, avec le mouvement saccadé d'une montre mécanique.
 - **Météo en direct** dans la petite fenêtre du cadran, avec des icônes animées (soleil, nuages, pluie, neige, orage, brouillard).
+- **Musique de fond** : le petit bouton à note sur le cadran lance ou arrête, en boucle, une musique choisie sur votre ordinateur (audio ou vidéo). Aucune musique n'est fournie avec l'appli.
 - **Fin de session** : carillon doux (son synthétisé) et pétales qui tombent.
 - **Fenêtre transparente**, toujours au premier plan, qu'on déplace en tenant le boîtier. Sa position est mémorisée.
 - **Icône près de l'horloge Windows** : clic gauche pour afficher ou cacher la montre, clic droit pour le menu.
@@ -34,7 +35,7 @@ Il faut Windows 10 ou 11, avec WebView2 (déjà présent sur Windows 11).
 | Molette ou glisser sur la couronne | Régler la durée par crans |
 | Survol | Afficher le temps restant (ou l'heure) |
 | Glisser le boîtier | Déplacer la montre |
-| Clic droit | Menu : mode, durée, Pomodoro, ville de la météo, taille, quitter |
+| Clic droit | Menu : mode, durée, Pomodoro, ville de la météo, musique, taille, quitter |
 
 ## Développement
 

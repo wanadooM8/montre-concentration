@@ -30,6 +30,7 @@ export const settings = {
   size: load('size', 'moyenne'),                // clé de SIZES
   mode: load('mode', 'focus'),                  // 'focus' (concentration) | 'watch' (montre)
   place: load('place', null),                   // { name, lat, lon } pour la météo
+  music: load('music', null),                   // chemin du fichier de musique (appli seulement)
 };
 
 /** Change un réglage et le mémorise. */

@@ -18,7 +18,10 @@ tauri-build = { version = "2.7.3", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-# tray-icon : icône dans la zone de notification ; image-png : icônes PNG
-tauri = { version = "2.12.4", features = ["tray-icon", "image-png"] }
+# tray-icon : icône dans la zone de notification ; image-png : icônes PNG ;
+# protocol-asset : lecture de la musique choisie sur le disque
+tauri = { version = "2.12.4", features = ["tray-icon", "image-png", "protocol-asset"] }
 # Mémorise la position de la montre sur le bureau
 tauri-plugin-window-state = "2"
+# Fenêtre Windows de choix d'un fichier (musique)
+tauri-plugin-dialog = "2"

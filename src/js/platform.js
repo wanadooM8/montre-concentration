@@ -3,7 +3,8 @@
  *
  * Le même code tourne dans un navigateur (aperçu) et dans l'appli Tauri.
  * Dans l'appli, `window.__TAURI__` est fourni (option app.withGlobalTauri) :
- * on l'utilise pour le menu natif, la taille et le déplacement de la fenêtre.
+ * on l'utilise pour le menu natif, la taille et le déplacement de la fenêtre,
+ * et pour choisir puis lire un fichier de musique sur le disque.
  * Dans le navigateur, ces fonctions ne font rien.
  */
 
@@ -44,4 +45,24 @@ export async function popupNativeMenu(items) {
   });
   const menu = await tauri.menu.Menu.new({ items: entries });
   await menu.popup();
+}
+
+/**
+ * Fait choisir un fichier de musique dans une fenêtre Windows.
+ * @param {string[]} extensions extensions proposées
+ * @returns {Promise<string|null>} chemin du fichier, ou null si annulé
+ */
+export async function pickFile(title, extensions) {
+  const path = await tauri.dialog.open({
+    title,
+    multiple: false,
+    directory: false,
+    filters: [{ name: title, extensions }],
+  });
+  return path ?? null;
+}
+
+/** Adresse lisible par la page pour un fichier du disque (protocole « asset » de Tauri). */
+export function fileUrl(path) {
+  return tauri.core.convertFileSrc(path);
 }

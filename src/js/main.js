@@ -2,7 +2,9 @@
  * Point d'entrée : relie le cadran, le minuteur, la météo et le menu,
  * puis lance la boucle d'affichage.
  */
-import { SIZES, PRESET_DURATIONS, MIN_DURATION, WEATHER_REFRESH_MS } from './config.js';
+import {
+  SIZES, PRESET_DURATIONS, MIN_DURATION, WEATHER_REFRESH_MS, MUSIC_EXTENSIONS,
+} from './config.js';
 import { byId } from './dom.js';
 import { settings, setSetting } from './settings.js';
 import { parseDuration, formatDuration } from './duration.js';
@@ -10,10 +12,13 @@ import { timer, toggle, reset, setDuration, remainingMs, update } from './timer.
 import { buildDial, DialView } from './dial.js';
 import { setupInteractions } from './interactions.js';
 import { chime } from './sound.js';
+import { setMusic, hasMusic, isPlaying, playMusic, stopMusic, onMusicChange } from './music.js';
 import { dropPetals, startBlinking, startStormFlashes } from './effects.js';
 import { setupContextMenu } from './ui/menu.js';
 import { ask, setAskHooks } from './ui/ask.js';
-import { isApp, setWindowSize, startDragging, closeApp, popupNativeMenu } from './platform.js';
+import {
+  isApp, setWindowSize, startDragging, closeApp, popupNativeMenu, pickFile, fileUrl,
+} from './platform.js';
 import {
   weather, fetchWeather, findCity, locateDevice, weatherLabel, renderWeather,
 } from './weather/weather.js';
@@ -24,7 +29,7 @@ const els = Object.fromEntries([
   'watch', 'dots', 'numerals', 'arc', 'arcEdge', 'readout', 'paused',
   'hourHand', 'minuteHand', 'secondHand', 'dialHit', 'hourHit', 'minuteHit',
   'crownHit', 'crownGlow', 'sky', 'wIcon', 'wFlash', 'userScene', 'userBgImg',
-  'menu', 'filePick', 'hint', 'case',
+  'menu', 'filePick', 'musicPick', 'musicBtn', 'hint', 'case',
 ].map((id) => [id, byId(id)]));
 
 /**
@@ -79,6 +84,39 @@ els.filePick.addEventListener('change', (e) => {
   if (file) setBackground(URL.createObjectURL(file));
   e.target.value = ''; // permet de rechoisir la même image
 });
+
+/* ---------- Musique ---------- */
+
+/** Fait choisir un fichier de musique, puis le lance. */
+async function chooseMusic() {
+  if (!isApp) {
+    els.musicPick.click(); // suite dans l'écouteur « change » ci-dessous
+    return;
+  }
+  const path = await pickFile('Choisir une musique', MUSIC_EXTENSIONS);
+  if (!path) return;
+  setSetting('music', path);
+  setMusic(fileUrl(path));
+  playMusic();
+}
+els.musicPick.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setMusic(URL.createObjectURL(file));
+    playMusic();
+  }
+  e.target.value = '';
+});
+
+/** Lance ou arrête la musique ; sans musique (ou si elle est introuvable), en fait choisir une. */
+async function toggleMusic() {
+  if (isPlaying()) stopMusic();
+  else if (!hasMusic() || !(await playMusic())) chooseMusic();
+}
+
+els.musicBtn.addEventListener('click', toggleMusic);
+els.musicBtn.addEventListener('dblclick', (e) => e.stopPropagation());
+onMusicChange((playing) => els.musicBtn.classList.toggle('playing', playing));
 
 /* ---------- Météo ---------- */
 
@@ -159,6 +197,11 @@ function menuItems() {
     { label: 'Petite fenêtre' },
     { text: 'Météo en direct', mark: !backgroundUrl, act: () => setBackground(null) },
     { text: 'Image officielle…', mark: !!backgroundUrl, act: () => els.filePick.click() },
+    { sep: true },
+    { label: 'Musique' },
+    ...(hasMusic() ? [{ text: isPlaying() ? 'Arrêter la musique' : 'Lancer la musique', act: toggleMusic }] : []),
+    { text: 'Choisir une musique…', act: chooseMusic },
+    { sep: true },
     { label: 'Taille' },
     ...Object.keys(SIZES).map((size) => ({
       text: size[0].toUpperCase() + size.slice(1),
@@ -233,6 +276,7 @@ startStormFlashes(els.wFlash, () => weather.kind === 'storm');
 
 setMode(settings.mode);
 setSize(settings.size);
+if (isApp && settings.music) setMusic(fileUrl(settings.music)); // prête, lancée par le bouton
 renderWeather(els.sky, els.wIcon);
 if (settings.place) refreshWeather();
 else useDevicePosition({ silent: true }); // au premier lancement, sans insister si c'est refusé
