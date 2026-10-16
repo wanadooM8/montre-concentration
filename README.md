@@ -19,7 +19,7 @@ Elle sert de minuteur de concentration, et peut aussi devenir une simple montre 
 
 ## Installation
 
-Télécharge `Montre-de-concentration_x64-setup.exe` depuis la page [Releases](../../releases), puis lance-le. L'installation se fait pour ton seul compte Windows et ne demande pas de droits administrateur.
+Télécharge l’installateur `Montre-de-concentration_<version>_x64-setup.exe` depuis la page [Releases](../../releases), puis lance-le. L'installation se fait pour ton seul compte Windows et ne demande pas de droits administrateur. Windows SmartScreen peut afficher un avertissement, car l’installateur n’est pas signé : clique sur « Informations complémentaires », puis « Exécuter quand même ».
 
 Il faut Windows 10 ou 11, avec WebView2 (déjà présent sur Windows 11).
 
