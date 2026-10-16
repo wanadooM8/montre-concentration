@@ -1,6 +1,6 @@
 [package]
 name = "montre-concentration"
-version = "0.2.0"
+version = "0.3.0"
 description = "Petite montre de gousset de bureau pour se concentrer"
 authors = ["Ethan"]
 license = "MIT"
