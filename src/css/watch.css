@@ -1,0 +1,305 @@
+/* ==========================================================================
+   Montre de concentration — styles
+   ========================================================================== */
+
+:root {
+  --ink: #2f2618;          /* encre des contours et du texte */
+  --paper: #fbf5e4;        /* papier crème des menus */
+  --paper-dark: #efe3c4;   /* survol des éléments de menu */
+  --paper-line: #d9c9a3;   /* bordures papier */
+  --leaf: #6fa35a;         /* vert feuille */
+  --muted: #8a7a5a;        /* libellés secondaires */
+  --error: #a0412d;
+  --serif: "Cormorant Garamond", "Times New Roman", serif;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+/* Fond d'aperçu uniquement : dans l'appli Tauri, la fenêtre sera transparente. */
+body {
+  background: radial-gradient(circle at 30% 20%, #5b7a8c, #26313f 70%);
+  font-family: var(--serif);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   La montre
+   -------------------------------------------------------------------------- */
+
+#watch {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--size, 300px);
+  transition: width 0.3s ease;
+}
+
+#watch svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.numeral {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 50px;
+  fill: #1d1a16;
+}
+
+/* Temps restant (ou heure) : visible au survol, ou brièvement après un réglage */
+#readout {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+#watch:hover #readout,
+#readout.show {
+  opacity: 1;
+}
+
+#paused {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#paused.show {
+  opacity: 1;
+}
+
+/* Zones cliquables et curseurs */
+#dialHit { cursor: pointer; }
+#crownHit { cursor: ns-resize; }
+.handHit { cursor: grab; }
+.handHit.dragging { cursor: grabbing; }
+
+/* En mode montre, rien ne se règle : curseur normal partout */
+.watch-mode .handHit,
+.watch-mode #dialHit,
+.watch-mode #crownHit {
+  cursor: default;
+}
+
+/* Halo de la couronne (survol ou réglage en cours) */
+#crownGlow {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#crownHit:hover + #crownGlow,
+#crownGlow.active {
+  opacity: 1;
+}
+
+/* Clignement de la boule de suie : la paupière descend puis remonte */
+.lid {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+.lid.blink {
+  animation: blink 0.22s ease-in-out;
+}
+@keyframes blink {
+  50% { transform: scaleY(1); }
+}
+
+/* --------------------------------------------------------------------------
+   Icônes météo (petite fenêtre)
+   -------------------------------------------------------------------------- */
+
+.sunRays {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin 24s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Gouttes et flocons : petite chute qui recommence en boucle */
+.wDrop { animation: fallLoop 1s linear infinite; }
+.wFlake { animation: fallLoop 2.6s linear infinite; }
+@keyframes fallLoop {
+  0% { transform: translateY(-3px); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(7px); opacity: 0; }
+}
+
+.wBoltBlink { animation: boltBlink 2.4s steps(1) infinite; }
+@keyframes boltBlink {
+  0%, 70% { opacity: 1; }
+  72% { opacity: 0.2; }
+  76% { opacity: 1; }
+  79% { opacity: 0.2; }
+  83% { opacity: 1; }
+}
+
+.wFogLine { animation: fogSway 4s ease-in-out infinite alternate; }
+@keyframes fogSway {
+  from { transform: translateX(-3px); }
+  to { transform: translateX(3px); }
+}
+
+/* --------------------------------------------------------------------------
+   Pétales de fin de session
+   -------------------------------------------------------------------------- */
+
+.petal {
+  position: absolute;
+  width: 12px;
+  height: 8px;
+  border-radius: 60% 40% 60% 40%;
+  background: #f7c6d9;
+  box-shadow: inset -2px -1px 0 #e9a3bf;
+  pointer-events: none;
+  animation: petalFall linear forwards;
+}
+@keyframes petalFall {
+  from { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  to { transform: translate(var(--dx), 260px) rotate(540deg); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Menu du clic droit
+   -------------------------------------------------------------------------- */
+
+#menu {
+  position: absolute;
+  display: none;
+  min-width: 190px;
+  padding: 6px 0;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  color: var(--ink);
+}
+
+/* Petite feuille décorative dans le coin */
+#menu::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  width: 14px;
+  height: 9px;
+  background: var(--leaf);
+  border-radius: 0 100% 0 100%;
+  transform: rotate(-20deg);
+}
+
+#menu .item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 18px;
+  cursor: pointer;
+}
+#menu .item:hover { background: var(--paper-dark); }
+#menu .sep {
+  height: 1px;
+  margin: 5px 10px;
+  background: #e2d4b0;
+}
+#menu .label {
+  padding: 4px 18px 2px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   Petite fenêtre de saisie (durée personnalisée, ville)
+   -------------------------------------------------------------------------- */
+
+#ask {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  width: 240px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  color: var(--ink);
+  font-size: 18px;
+}
+#ask input {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 4px;
+  padding: 6px 8px;
+  font: inherit;
+  color: var(--ink);
+  background: #fffaf0;
+  border: 1px solid #cdb98c;
+  border-radius: 8px;
+}
+#askMsg {
+  min-height: 18px;
+  font-size: 14px;
+  color: var(--error);
+}
+#ask .row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+#ask button {
+  padding: 3px 12px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--paper-dark);
+  border: 1px solid #cdb98c;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Appli de bureau (classe .app posée par main.js) : fenêtre transparente
+   qui épouse la montre, sans fond ni aide.
+   -------------------------------------------------------------------------- */
+
+.app body {
+  background: transparent;
+}
+
+.app #watch {
+  left: 0;
+  top: 0;
+  transform: none;
+  width: var(--app-width, 213px);
+  transition: none;
+}
+
+.app #case {
+  cursor: move;
+}
+
+.app #hint {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Aide en bas de page (aperçu navigateur uniquement)
+   -------------------------------------------------------------------------- */
+
+#hint {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  font: 13px/1.5 system-ui, sans-serif;
+  color: #d8e2ea;
+  opacity: 0.75;
+}
